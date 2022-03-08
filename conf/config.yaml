@@ -1,0 +1,40 @@
+storage: /verdaccio/storage
+plugins: /verdaccio/plugins
+web:
+    enable: true
+    title: Npm Resgistry
+    # logo: ""
+    # favicon: ""
+    # primary_color: ""
+    gravatar: true
+    darkMode: true
+    login: true
+    pkgManagers:
+        - npm
+        - yarn
+    sign:
+        expiresIn: 1h
+auth:
+    htpasswd:
+        file: ./htpasswd
+        max_users: 10
+uplinks:
+    private:
+        url: http://localhost:4873/registry/
+    npmjs:
+        url: https://registry.npmjs.org/
+packages:
+    "@company/*":
+        access: $all
+        publish: $authenticated
+        proxy: private
+    "@custom/*":
+        access: $all
+        publish: $authenticated
+        proxy: private
+    "**":
+        proxy: npmjs
+publish:
+    allow_offline: true
+logs:
+  - { type: stdout, format: pretty, level: http }
